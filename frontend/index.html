@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bus Tickts</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="bgimg w3-display-container w3-animate-opacity ">
+        <div class="overlay"></div>
+        <div class="w3-xlarge w3-animate-top">
+            <h2 class="w3-display-topleft w3-padding-large"><strong>TravelEase</strong></h2>
+            <h2 class="w3-display-topmiddle w3-padding-large">Travel with comfort and safety</h2>
+            <h2 class="w3-display-topright w3-padding-large" id="yourtickets" onclick="ListTickts()"><strong>Your tickets</strong></h2>
+        </div>
+
+
+        <div class="w3-display-middle">
+            <h1 class="w3-center w3-animate-top">Buy your bus ticket now!</h1>
+            <hr class="w3-border-white w3-animate-right" style="margin-left: 20%;width:60%">
+            <div class="w3-animate-bottom w3-padding-small w3-container" style="width:100%">
+                <div class="w3-bar w3-black w3-center">
+                    <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'One Way');">One Way</button>
+                    <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Round Trip');">Round Trip</button>
+                </div>
+
+                <!-- One Way -->
+                <div id="One Way" class="w3-container w3-white myLink">
+                    <h3 class="w3-center">Travel the world with us</h3>
+                    <div class="w3-row-padding" style="margin:16px -16px;">
+                        <div class="w3-half">
+                            <label>From</label>
+                            <select class="w3-select" name="From" id="departureOneWay"
+                                onchange="handleDepartureChange('OneWay')">
+                                <option value="" disabled selected>Select your origin </option>
+                                <option value="Aveiro">Aveiro</option>
+                                <option value="Braga">Braga</option>
+                                <option value="Coimbra">Coimbra</option>
+                                <option value="Porto">Porto</option>
+                                <option value="Lisboa">Lisboa</option>
+                            </select>
+                        </div>
+                        <div class="w3-half">
+                            <label>To</label>
+                            <select class="w3-select" name="From" id="arrivalOneWay"
+                                onchange="handleDepartureChange('OneWay')">
+                                <option value="" disabled selected>Select your origin </option>
+                                <option value="Aveiro">Aveiro</option>
+                                <option value="Braga">Braga</option>
+                                <option value="Coimbra">Coimbra</option>
+                                <option value="Porto">Porto</option>
+                                <option value="Lisboa">Lisboa</option>
+                            </select>
+                        </div>
+                        <div class="w3-half" style="margin-top:16px;">
+                            <label>Departure</label>
+                            <input class="w3-input w3-border" type="date" placeholder="Departure"
+                                id="departureDateOneWay">
+
+                        </div>
+                        <div class="w3-half" style="margin-top:16px;">
+                            <label> Passengers</label>
+                        </div>
+                        <div class="w3-dropdown-click w3-row-padding" style="width: 200px !important;">
+                            <button onclick="togglePassengerDropdown('OneWay')" class="w3-button  w3-border"
+                                style="width: 200px !important;" id="passengersOneWay">1 Adult</button>
+                            <div id="passengerDropdownOneWay" class="w3-dropdown-content w3-bar-block w3-border"
+                                style="width: 300px !important;">
+                                <div class="w3-bar-item w3-row" style="align-items: center;">
+                                    <div class="w3-col" style="width: 30%; text-align: right;">
+                                        <span style="margin-right: 10px;">Adults:</span>
+                                    </div>
+                                    <div class="w3-col"
+                                        style="width: 70%; display: flex; justify-content: space-between; align-items: center;">
+                                        <button onclick="removePassenger('adult', 'OneWay')"
+                                            class="w3-button w3-border w3-round-large w3-red"
+                                            style="padding: 5px; width: 50px !important;"><strong>-</strong></button>
+                                        <span id="adultCountOneWay" style="margin: 0 15px;"><strong>1</strong></span>
+                                        <button onclick="addPassenger('adult', 'OneWay')"
+                                            class="w3-button w3-border w3-round-large w3-green"
+                                            style="padding: 5px; width: 50px !important;"><strong>+</strong></button>
+                                    </div>
+                                </div>
+                                <div class="w3-bar-item w3-row" style="align-items: center;">
+                                    <div class="w3-col" style="width: 30%; text-align: right;">
+                                        <span style="margin-right: 10px;">Children:</span>
+                                    </div>
+                                    <div class="w3-col"
+                                        style="width: 70%; display: flex; justify-content: space-between; align-items: center;">
+                                        <button onclick="removePassenger('child', 'OneWay')"
+                                            class="w3-button w3-border w3-round-large w3-red"
+                                            style="padding: 5px; width: 50px !important;"><strong>-</strong></button>
+                                        <span id="childCountOneWay" style="margin: 0 15px;"><strong>0</strong></span>
+                                        <button onclick="addPassenger('child', 'OneWay')"
+                                            class="w3-button w3-border w3-round-large w3-green"
+                                            style="padding: 5px; width: 50px !important;"><strong>+</strong></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                  
+
+                    <div class="w3-row-padding w3-center" style="margin:20px;">
+                        <button class="w3-button w3-round-xlarge w3-yellow" onclick="searchForTrips()">Find
+                            dates</button>
+                    </div>
+
+                </div>
+
+
+                <!-- Round Trip -->
+                <div id="Round Trip" class="w3-container w3-white myLink">
+                    <h3 class="w3-center">Travel the world with us</h3>
+                    <div class="w3-row-padding" style="margin:16px -16px;">
+                        <div class="w3-half">
+                            <label>From</label>
+                            <select class="w3-select" name="From" id="departureRoundTrip"
+                                onchange="handleDepartureChange('RoundTrip')">
+                                <option value="" disabled selected>Select your origin </option>
+                                <option value="Aveiro">Aveiro</option>
+                                <option value="Braga">Braga</option>
+                                <option value="Coimbra">Coimbra</option>
+                                <option value="Porto">Porto</option>
+                                <option value="Lisboa">Lisboa</option>
+                            </select>
+                        </div>
+                        <div class="w3-half">
+                            <label>To</label>
+                            <select class="w3-select" name="From" id="arrivalRoundTrip"
+                                onchange="handleDepartureChange('RoundTrip')">
+                                <option value="" disabled selected>Select your origin </option>
+                                <option value="Aveiro">Aveiro</option>
+                                <option value="Braga">Braga</option>
+                                <option value="Coimbra">Coimbra</option>
+                                <option value="Porto">Porto</option>
+                                <option value="Lisboa">Lisboa</option>
+                            </select>
+                        </div>
+                        <div class="w3-third" style="margin-top:16px;">
+                            <label>Departure</label>
+                            <input class="w3-input w3-border" type="date" placeholder="Departure"
+                                id="departureDateRoundTrip">
+
+                        </div>
+                        <div class="w3-third" style="margin-top:16px;">
+                            <label>Return</label>
+                            <input class="w3-input w3-border" type="date" placeholder="Return" id="returnDateRoundTrip">
+
+                        </div>
+                        <div class="w3-third" style="margin-top:16px;">
+                            <label> Passengers</label>
+                        </div>
+                        <div class="w3-dropdown-click w3-row-padding" style="width: 200px !important;">
+                            <button onclick="togglePassengerDropdown('RoundTrip')" class="w3-button  w3-border"
+                                style="width: 200px !important;" id="passengersRoundTrip">1 Adult</button>
+                            <div id="passengerDropdownRoundTrip" class="w3-dropdown-content w3-bar-block w3-border"
+                                style="width: 300px !important;">
+                                <div class="w3-bar-item w3-row" style="align-items: center;">
+                                    <div class="w3-col" style="width: 30%; text-align: right;">
+                                        <span style="margin-right: 10px;">Adults:</span>
+                                    </div>
+                                    <div class="w3-col"
+                                        style="width: 70%; display: flex; justify-content: space-between; align-items: center;">
+                                        <button onclick="removePassenger('adult', 'RoundTrip')"
+                                            class="w3-button w3-border w3-round-large w3-red"
+                                            style="padding: 5px; width: 50px !important;"><strong>-</strong></button>
+                                        <span id="adultCountRoundTrip" style="margin: 0 15px;"><strong>1</strong></span>
+                                        <button onclick="addPassenger('adult', 'RoundTrip')"
+                                            class="w3-button w3-border w3-round-large w3-green"
+                                            style="padding: 5px; width: 50px !important;"><strong>+</strong></button>
+                                    </div>
+                                </div>
+                                <div class="w3-bar-item w3-row" style="align-items: center;">
+                                    <div class="w3-col" style="width: 30%; text-align: right;">
+                                        <span style="margin-right: 10px;">Children:</span>
+                                    </div>
+                                    <div class="w3-col"
+                                        style="width: 70%; display: flex; justify-content: space-between; align-items: center;">
+                                        <button onclick="removePassenger('child', 'RoundTrip')"
+                                            class="w3-button w3-border w3-round-large w3-red"
+                                            style="padding: 5px; width: 50px !important;"><strong>-</strong></button>
+                                        <span id="childCountRoundTrip" style="margin: 0 15px;"><strong>0</strong></span>
+                                        <button onclick="addPassenger('child', 'RoundTrip')"
+                                            class="w3-button w3-border w3-round-large w3-green"
+                                            style="padding: 5px; width: 50px !important;"><strong>+</strong></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="w3-row-padding w3-center" style="margin:20px;">
+                        <button class="w3-button w3-round-xlarge w3-yellow" onclick="searchForTrips()">Find
+                            dates</button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="w3-display-bottommiddle w3-padding-large">
+        Powered by <a href="https://cristiano-nicolau.github.io" target="_blank">Cristiano Nicolau</a>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function getCurrentDate() {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+            var yyyy = today.getFullYear();
+
+            return yyyy + '-' + mm + '-' + dd;
+        }
+
+        document.getElementById('departureDateOneWay').min = getCurrentDate();
+        document.getElementById('departureDateRoundTrip').min = getCurrentDate();
+        document.getElementById('returnDateRoundTrip').min = getCurrentDate();
+
+
+        function handleDepartureChange(tripType) {
+            var departureSelect;
+            var arrivalSelect;
+
+            if (tripType === 'OneWay') {
+                departureSelect = document.getElementById('departureOneWay');
+                arrivalSelect = document.getElementById('arrivalOneWay');
+            } else if (tripType === 'RoundTrip') {
+                departureSelect = document.getElementById('departureRoundTrip');
+                arrivalSelect = document.getElementById('arrivalRoundTrip');
+            }
+
+            var selectedDeparture = departureSelect.value;
+            var selectedArrival = arrivalSelect.value;
+
+            // Desabilita a opção de chegada igual à opção de partida
+            for (var i = 0; i < arrivalSelect.options.length; i++) {
+                if (arrivalSelect.options[i].value === selectedDeparture) {
+                    arrivalSelect.options[i].disabled = true;
+                } else {
+                    arrivalSelect.options[i].disabled = false;
+                }
+            }
+
+            for (var i = 0; i < departureSelect.options.length; i++) {
+                if (departureSelect.options[i].value === selectedArrival) {
+                    departureSelect.options[i].disabled = true;
+                } else {
+                    departureSelect.options[i].disabled = false;
+                }
+            }
+
+            // Se a partida for igual à chegada, limpa a seleção da chegada
+            if (selectedDeparture === selectedArrival) {
+                arrivalSelect.value = '';
+            }
+        }
+
+
+        function searchForTrips() {
+            var tripType = document.querySelector('.tablink.w3-red').textContent;
+            var departure = document.getElementById(tripType === 'One Way' ? 'departureOneWay' : 'departureRoundTrip').value;
+            var arrival = document.getElementById(tripType === 'One Way' ? 'arrivalOneWay' : 'arrivalRoundTrip').value;
+            var departureDate = document.getElementById(tripType === 'One Way' ? 'departureDateOneWay' : 'departureDateRoundTrip').value;
+            if (tripType === 'Round Trip') {
+                var returnDate = document.getElementById('returnDateRoundTrip').value;
+            }
+
+            // Verificar se todos os campos obrigatórios foram preenchidos
+            if (!departure || !arrival || !departureDate || (tripType === 'Round Trip' && !returnDate)) {
+                alert('Please fill all required fields');
+                return;
+            }
+            // Guarda em cache os dados da solicitação
+            var requestData = {
+                tripType: tripType,
+                departure: departure,
+                arrival: arrival,
+                departureDate: departureDate,
+                passengers: {
+                    adult: document.getElementById(tripType === 'One Way' ? 'adultCountOneWay' : 'adultCountRoundTrip').textContent,
+                    child: document.getElementById(tripType === 'One Way' ? 'childCountOneWay' : 'childCountRoundTrip').textContent
+                }
+            };
+            console.log(requestData);
+            if (tripType === 'Round Trip') {
+                requestData.returnDate = returnDate;
+            }
+
+
+            // guardar os dados da solicitação no local storage
+            localStorage.setItem('requestData', JSON.stringify(requestData));
+
+            // Redirecionar para a página de search.html com a data + origem + destino na referencia
+            var url = 'search.html?departure=' + departure + '&arrival=' + arrival + '&departureDate=' + departureDate;
+            if (tripType === 'Round Trip') {
+                url += '&returnDate=' + returnDate;
+            }
+
+            window.location.href = url;
+
+
+        }
+
+        // guarda na local storage a moeda e o seu valor currente ou seja {moeda:valor}, que quero que seja de inicio o USD, 1
+        function limpar() {
+                localStorage.removeItem('currency');
+                localStorage.removeItem('requestData');
+                localStorage.removeItem('tripAway');
+                localStorage.removeItem('tripBack');
+                localStorage.removeItem('OtherTrip');
+                localStorage.removeItem('markedBackTripID');
+                localStorage.removeItem('markedAwayTripID');
+                localStorage.setItem('currency', JSON.stringify({ 'USD': 1 }));
+            };  
+            window.onload = limpar();
+
+        function ListTickts(){
+            window.location.href='markedlist.html'
+        }
+    </script>
+</body>
+
+</html>

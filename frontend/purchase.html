@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Selected Journey Details</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="bgimg w3-display-container w3-animate-opacity ">
+        <div class="overlay2"></div>
+        <div class="w3-xlarge w3-animate-top">
+            <h3 class="w3-display-topleft w3-padding-large" id="yourtickets"><a style="text-decoration:none"
+                href="index.html"><strong>TravelEase</strong></a></h3>
+        <h3 class="w3-display-topright w3-padding-large"><strong>Travel with comfort and safety</strong></h3>
+        </div>
+
+        <div class="w3-display-middle" style="width: 75%;">
+            <div class="w3-row-padding" >
+                <!-- Coluna para exibir informações da viagem -->
+                <div class="w3-half w3-animate-bottom w3-padding-large" style="color: white;">
+                    <h2 class="w3-center">Selected Journey Details</h2>
+                    <div class="w3-container w3-padding-small" id="tripDetailsContainer">
+                        
+                    </div>
+                    
+                </div>
+
+                <!-- Coluna para o formulário de dados pessoais -->
+                <div class="w3-half w3-animate-bottom w3-padding-small" style="color: white;">
+                    <h2 class="w3-center">Enter Personal Details</h2>
+                    <form class="w3-container" action="submit_details.php" method="POST">
+                        <label class="w3-text-white">Name</label>
+                        <input class="w3-input w3-border" type="text" name="name">
+
+                        <label class="w3-text-white">Email</label>
+                        <input class="w3-input w3-border" type="email" name="email">
+
+                        <label class="w3-text-white">Phone</label>
+                        <input class="w3-input w3-border" type="tel" name="phone">
+
+                        <label class="w3-text-white">Nif</label>
+                        <input class="w3-input w3-border" type="text" name="nif">
+
+                        <label class="w3-text-white">Address</label>
+                        <input class="w3-input w3-border" type="text" name="address">
+
+                        <label class="w3-text-white">City</label>
+                        <input class="w3-input w3-border" type="text" name="city">
+
+                        <label class="w3-text-white">Zip Code</label>
+                        <input class="w3-input w3-border" type="text" name="zip">
+
+                        <label class="w3-text-white">Card Type</label>
+                        <select class="w3-select" name="cardType">
+                            <option value="visa">Visa</option>
+                            <option value="mastercard">Mastercard</option>
+                            <option value="amex">American Express</option>
+                        </select>
+
+                        <label class="w3-text-white">Card Number</label>
+                        <input class="w3-input w3-border" type="text" name="cardNumber">
+                       
+                    </form>
+                </div>
+                <div class="w3-row-padding w3-center" style="margin:20px;">
+                    <button class="w3-button w3-round-xlarge w3-yellow w3-margin-top w3-animate-bottom" type="submit" onclick="SubmitData()">Submit</button>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="w3-display-bottommiddle w3-padding-large">
+            Powered by <a href="https://cristiano-nicolau.github.io" target="_blank">Cristiano Nicolau</a>
+        </div>
+    </div>
+    <script>
+       document.addEventListener('DOMContentLoaded', function() {
+    var tripAway = JSON.parse(localStorage.getItem('tripAway'));
+    console.log(tripAway);
+    var tripBack = (localStorage.getItem('tripBack'));
+
+    var tripDetailsContainer = document.getElementById('tripDetailsContainer');
+
+    if (tripBack) {
+        tripBack = JSON.parse(tripBack);
+        // Se ambas as viagens estiverem disponíveis, exiba-as em contêineres separados
+        var tripAwayDetails = createTripDetailsElement(tripAway, 'Away');
+        var tripBackDetails = createTripDetailsElement(tripBack, 'Back');
+
+        tripDetailsContainer.appendChild(tripAwayDetails);
+        tripDetailsContainer.appendChild(tripBackDetails);
+    } else {
+        // Se apenas a viagem de ida estiver disponível, exiba-a em um único contêiner
+        var tripDetails = createTripDetailsElement(tripAway, 'Away');
+        tripDetailsContainer.appendChild(tripDetails);
+    }
+
+    //no fim colcoa o valor do total a pagar
+    var tripDetails = document.createElement('div');
+    tripDetails.className = 'w3-container w3-padding-small';
+
+    
+    
+    var total = document.createElement('p');
+    var currency = JSON.parse(localStorage.getItem('currency'));
+        var currentCoin = Object.keys(currency)[0];
+    if (currentCoin !== 'USD') {
+                fetch('http://localhost:8080/api/exchange/USD/' + currentCoin)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to update data with new currency');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            var totalPrice = getTotalToPay() * data;
+                            total.innerHTML = '<strong> Total to Pay:</strong> <span id="totalToPay">' + totalPrice.toFixed(2)+ ' ' + currentCoin + '</span>';
+                        })
+                        .catch(error => {
+                            console.error('Error updating data:', error);
+                        });
+            }
+
+                else {
+                    total.innerHTML = '<strong> Total to Pay:</strong> <span id="totalToPay">' + getTotalToPay() + ' ' + currentCoin + '</span>';
+                }
+
+    
+    tripDetails.appendChild(total);
+    tripDetailsContainer.appendChild(tripDetails);
+
+    function getTotalToPay() {
+        var total = tripAway.price;
+        if (tripBack) {
+            total += tripBack.price;
+        }
+        return total.toFixed(2);
+    }
+
+    function createTripDetailsElement(trip, prefix) {
+
+        var tripDetails = document.createElement('div');
+        tripDetails.className = 'w3-container w3-padding-small';
+
+        var tripNumber = document.createElement('p');
+        tripNumber.innerHTML = '<strong>Trip Number:</strong> <span id="' + prefix + 'id">' + trip.id + '</span>';
+        tripDetails.appendChild(tripNumber);
+
+        var from = document.createElement('p');
+        from.innerHTML = '<strong>From:</strong> <span id="' + prefix + 'from">' + trip.origin + '</span>';
+        tripDetails.appendChild(from);
+
+        var to = document.createElement('p');
+        to.innerHTML = '<strong>To:</strong> <span id="' + prefix + 'to">' + trip.destination + '</span>';
+        tripDetails.appendChild(to);
+
+        var departureDate = document.createElement('p');
+        departureDate.innerHTML = '<strong>Departure Date:</strong> <span id="' + prefix + 'departureDate">' + trip.departureDate + '</span>';
+        tripDetails.appendChild(departureDate);
+
+        var departureTime = document.createElement('p');
+        departureTime.innerHTML = '<strong>Departure Time:</strong> <span id="' + prefix + 'departureTime">' + trip.departureTime.split(':').slice(0, 2).join(':') + '</span>';
+        tripDetails.appendChild(departureTime);
+
+        var arrivalTime = document.createElement('p');
+        arrivalTime.innerHTML = '<strong>Arrival Time:</strong> <span id="' + prefix + 'arrivalTime">' + trip.arrivalTime.split(':').slice(0, 2).join(':') + '</span>';
+        tripDetails.appendChild(arrivalTime);
+
+
+        var currency = JSON.parse(localStorage.getItem('currency'));
+        var currentCoin = Object.keys(currency)[0];
+
+        var price = document.createElement('p');
+
+        if (currentCoin !== 'USD') {
+                fetch('http://localhost:8080/api/exchange/USD/' + currentCoin)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to update data with new currency');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            var newPrice = trip.price * data;
+                            price.innerHTML = '<strong>Price:</strong> <span id="' + prefix + 'price">' + newPrice.toFixed(2) + ' ' + currentCoin + '</span>';
+                        })
+                        .catch(error => {
+                            console.error('Error updating data:', error);
+                        });
+            }
+
+                else {
+                    price.innerHTML = '<strong>Price:</strong> <span id="' + prefix + 'price">' + trip.price + ' ' + currentCoin + '</span>';
+                }
+        tripDetails.appendChild(price);
+        
+
+        var numPassengers = document.createElement('p');
+        numPassengers.innerHTML = '<strong>Number of Passengers:</strong><br> <span id="' + prefix + 'numPassengers">' + getNumPassengersString(trip) + '</span>';
+        tripDetails.appendChild(numPassengers);
+
+        var selectedSeats = document.createElement('p');
+        selectedSeats.innerHTML = '<strong>Selected Seat:</strong><br><ol id="' + prefix + 'selectedSeatsList">' + getSelectedSeatsList(trip) + '</ol>';
+        tripDetails.appendChild(selectedSeats);
+
+        var space = document.createElement('br');
+        tripDetails.appendChild(space);
+
+        return tripDetails;
+    }
+
+    function getNumPassengersString(trip) {
+        var adults = trip.passengers.adult;
+        var children = trip.passengers.child;
+        var numPassengersString = 'Adults: ' + adults;
+        if (children > 0) {
+            numPassengersString += ' Children: ' + children;
+        }
+        return numPassengersString;
+    }
+    function getSelectedSeatsList(trip) {
+    var occupiedSeats = trip.occupiedSeats.map(function(seat) {
+        return seat.seatNumber;
+    });
+    occupiedSeats.sort(); // Sort the occupied seats in ascending order
+    return occupiedSeats.join(', '); // Join the occupied seats with a comma
+}
+
+});
+
+function SubmitData() {
+    var tripAway = JSON.parse(localStorage.getItem('tripAway'));    
+    var tripBack = JSON.parse(localStorage.getItem('tripBack'));
+
+    var name = document.querySelector('input[name="name"]').value;
+    var email = document.querySelector('input[name="email"]').value;
+    var phone = document.querySelector('input[name="phone"]').value;
+    var nif = document.querySelector('input[name="nif"]').value;
+    var address = document.querySelector('input[name="address"]').value;
+    var city = document.querySelector('input[name="city"]').value;
+    var zipCode = document.querySelector('input[name="zip"]').value;
+    var cardType = document.querySelector('select[name="cardType"]').value;
+    var cardNumber = document.querySelector('input[name="cardNumber"]').value;
+
+
+    if (!name || !email || !phone || !nif || !address || !city || !zipCode || !cardNumber) {
+        alert('Please fill in all the fields');
+        return;
+    }
+
+    var awayid, backid;
+
+    var seatsList = tripAway.occupiedSeats.map(function(seat) {
+        return seat.seatNumber;
+    });
+
+    console.log(tripAway.passengers.child);
+    console.log(tripAway.passengers.adult);
+
+    var dataAway = {
+            tripID: tripAway.id,
+            numPassagersChildren: tripAway.passengers.child,
+            numPassagersAdults: tripAway.passengers.adult,
+            seats: seatsList,
+            name: name,
+            email: email,
+            phone: phone,
+            nif: nif,
+            address: address,
+            city: city,
+            zipCode: zipCode,
+            cardType: cardType,
+            cardNumber: cardNumber
+    };
+
+    fetch ('http://localhost:8080/api/mark/trip/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataAway)
+        })
+        .then(response => {
+            if (!response.ok) {
+                response.text().then(errorMessage => {
+            alert('Failed to submit data: ' + errorMessage);
+            throw new Error('Failed to submit data');
+        });
+
+            }
+            return response.json();
+        })
+        .then(data => {
+            awayid = data; // Atribui o ID da viagem marcada aqui
+            if (!tripBack) {
+                redirectToThankYouPage(awayid);
+            }
+           
+        })
+        .catch(error => {
+            console.error('Error submitting data:', error);
+        });
+
+
+    if (tripBack != null){
+
+        var seatsList = tripBack.occupiedSeats.map(function(seat) {
+            return seat.seatNumber;
+        });
+        var dataBack ={
+            tripID: tripBack.id,
+            numPassagersChildren: tripBack.passengers.child,
+            numPassagersAdults: tripBack.passengers.adult,
+            seats: seatsList,
+            name: name,
+            email: email,
+            phone: phone,
+            nif: nif,
+            address: address,
+            city: city,
+            zipCode: zipCode,
+            cardType: cardType,
+            cardNumber: cardNumber
+        }
+
+        fetch ('http://localhost:8080/api/mark/trip/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dataBack)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to submit data');
+                }
+                return response.json();
+            })
+            .then(data => {
+                backid = data;
+                redirectToThankYouPage(awayid, backid);
+               
+            })
+            .catch(error => {
+                console.error('Error submitting data:', error);
+            });
+    }
+
+    
+        
+
+    function redirectToThankYouPage(awayid, backid) {
+        var url = 'thankyou.html?away=' + awayid;
+        if (backid) {
+            url += '&back=' + backid;
+        }
+        window.location.href = url;
+    }
+}
+
+
+
+
+            
+    </script>
+</body>
+
+</html>

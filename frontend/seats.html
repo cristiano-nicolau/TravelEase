@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Selected Journey Details</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+
+    <div class="bgimg w3-display-container w3-animate-opacity ">
+        <div class="overlay2"></div>
+        <div class="w3-xlarge w3-animate-top">
+            <h3 class="w3-display-topleft w3-padding-large" id="yourtickets"><a style="text-decoration:none"
+                    href="index.html"><strong>TravelEase</strong></a></h3>
+            <h3 class="w3-display-topright w3-padding-large"><strong>Travel with comfort and safety</strong></h3>
+        </div>
+
+        <div class="w3-display-middle" style="width: 40% !important;">
+            <div class="w3-row">
+                <!-- Coluna para exibir informações da viagem -->
+                <div class="w3-half w3-animate-bottom w3-padding-large" style="color: white;">
+                    <h2 class="w3-center">Selected Journey Details</h2>
+                    <div class="w3-container">
+                        <p><strong>Trip Number:</strong> <span id="id"></span></p>
+                        <p><strong>From:</strong> <span id="from"></span></p>
+                        <p><strong>To:</strong> <span id="to"></span></p>
+                        <p><strong>Departure Date:</strong> <span id="departureDate"></span></p>
+                        <p><strong>Departure Time:</strong> <span id="departureTime"></span></p>
+                        <p><strong>Arrival Time:</strong> <span id="arrivalTime"></span></p>
+                        <p><strong>Price:</strong> <span id="price"></span></p>
+                        <br>
+                        <p><strong>Number of Passengers:</strong><br> <span id="numPassengers"></span></p>
+                        <p><strong>Selected Seat:</strong><br>
+                        <ol id="selectedSeatsList"></ol>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="w3-half w3-animate-bottom w3-padding-large" style="color: white;">
+                    <h2 class="w3-center">Select your Seat</h2>
+                    <div class="plane w3-animate-bottom">
+                        <ol>
+                            <li class="row">
+                                <ol class="sts" type="">
+                                    <li class="seat">
+                                        <input type="checkbox" checked id="" />
+                                        <label for="100">Os teus Lugares</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" disabled id="" />
+                                        <label for="100">Ocupados</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="" />
+                                        <label for="100">Livres</label>
+                                    </li>
+                                </ol>
+                            </li>
+                        </ol>
+                        <div class="exit exit--front fuselage">
+                        </div>
+                        <ol class="cabin fuselage">
+
+                            <li class="row row--1">
+
+                                <ol class="seats" type="">
+                                    <li class="seat">
+                                        <input type="checkbox" id="01" />
+                                        <label for="01">01</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="02" />
+                                        <label for="02">02</label>
+                                    </li>
+
+                                    <li class="seat">
+                                        <input type="checkbox" id="03" />
+                                        <label for="03">03</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="04" />
+                                        <label for="04">04</label>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li class="row row--2">
+                                <ol class="seats" type="">
+                                    <li class="seat">
+                                        <input type="checkbox" id="05" />
+                                        <label for="05">05</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="06" />
+                                        <label for="06">06</label>
+                                    </li>
+
+                                    <li class="seat">
+                                        <input type="checkbox" id="07" />
+                                        <label for="07">07</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="08" />
+                                        <label for="08">08</label>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li class="row row--3">
+                                <ol class="seats" type="">
+                                    <li class="seat">
+                                        <input type="checkbox" id="09" />
+                                        <label for="09">09</label>
+                                    </li>
+
+                                    <li class="seat">
+                                        <input type="checkbox" id="10" />
+                                        <label for="10">10</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="11" />
+                                        <label for="11">11</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="12" />
+                                        <label for="12">12</label>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li class="row row--4">
+                                <ol class="seats" type="">
+                                    <li class="seat">
+                                        <input type="checkbox" id="13" />
+                                        <label for="13">13</label>
+                                    </li>
+
+                                    <li class="seat">
+                                        <input type="checkbox" id="14" />
+                                        <label for="14">14</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="15" />
+                                        <label for="15">15</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="16" />
+                                        <label for="16">16</label>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li class="row row--5">
+                                <ol class="seats" type="">
+                                    <li class="seat">
+                                        <input type="checkbox" id="17" />
+                                        <label for="17">17</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="18" />
+                                        <label for="18">18</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="19" />
+                                        <label for="19">19</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="20" />
+                                        <label for="20">20</label>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li class="row row--6">
+                                <ol class="seats" type="">
+                                    <li class="seat">
+                                        <input type="checkbox" id="21" />
+                                        <label for="21">21</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="22" />
+                                        <label for="22">22</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="23" />
+                                        <label for="23">23</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="24" />
+                                        <label for="24">24</label>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li class="row row--7">
+                                <ol class="seats" type="">
+                                    <li class="seat">
+                                        <input type="checkbox" id="25" />
+                                        <label for="25">25</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="26" />
+                                        <label for="26">26</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="27" />
+                                        <label for="27">27</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="28" />
+                                        <label for="28">28</label>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li class="row row--8">
+                                <ol class="seats" type="">
+                                    <li class="seat">
+                                        <input type="checkbox" id="29" />
+                                        <label for="29">29</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="30" />
+                                        <label for="30">30</label>
+                                    </li>
+
+                                    <li class="exit"></li>
+                                </ol>
+                            </li>
+                            <li class="row row--9">
+                                <ol class="seats" type="">
+                                    <li class="seat">
+                                        <input type="checkbox" id="31" />
+                                        <label for="31">31</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="32" />
+                                        <label for="32">32</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="33" />
+                                        <label for="33">33</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="34" />
+                                        <label for="34">34</label>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li class="row row--10">
+                                <ol class="seats" type="">
+                                    <li class="seat">
+                                        <input type="checkbox" id="35" />
+                                        <label for="35">35</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="36" />
+                                        <label for="36">36</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="37" />
+                                        <label for="37">37</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="38" />
+                                        <label for="38">38</label>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li class="row row--11">
+                                <ol class="seats" type="">
+                                    <li class="seat">
+                                        <input type="checkbox" id="39" />
+                                        <label for="39">39</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="40" />
+                                        <label for="40">40</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="41" />
+                                        <label for="41">41</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="42" />
+                                        <label for="42">42</label>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li class="row row--12">
+                                <ol class="seats" type="">
+                                    <li class="seat">
+                                        <input type="checkbox" id="43" />
+                                        <label for="43">43</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="44" />
+                                        <label for="44">44</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="45" />
+                                        <label for="45">45</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="46" />
+                                        <label for="46">46</label>
+                                    </li>
+                                </ol>
+                            </li>
+                            <li class="row row--13">
+                                <ol class="seats" type="">
+                                    <li class="seat">
+                                        <input type="checkbox" id="47" />
+                                        <label for="47">47</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="48" />
+                                        <label for="48">48</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="49" />
+                                        <label for="49">49</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="49" />
+                                        <label for="49">49</label>
+                                    </li>
+                                    <li class="seat">
+                                        <input type="checkbox" id="50" />
+                                        <label for="50">50</label>
+                                    </li>
+                                </ol>
+                            </li>
+                        </ol>
+
+                    </div>
+                </div>
+                <div class="w3-row-padding w3-center" style="margin-left:20px;">
+                    <button class="w3-button w3-round-xlarge w3-yellow w3-margin-top w3-animate-bottom" type="submit"
+                        onclick="submitForm()">Submit</button>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="w3-display-bottommiddle w3-padding-large">
+            Powered by <a href="https://cristiano-nicolau.github.io" target="_blank">Cristiano Nicolau</a>
+        </div>
+    </div>
+    <script>
+        function submitForm() {
+            var tripAway = JSON.parse(localStorage.getItem('tripAway'));
+            var tripBack = JSON.parse(localStorage.getItem('tripBack'));
+            if (tripBack != null) {
+                var totalPassengers = parseInt(tripBack.passengers.adult) + parseInt(tripBack.passengers.child);
+            } else {
+                var totalPassengers = parseInt(tripAway.passengers.adult) + parseInt(tripAway.passengers.child);
+            }
+            var selectedSeats = document.querySelectorAll('input[type="checkbox"]:checked');
+            if (selectedSeats.length < totalPassengers + 1) {
+                alert('Please select a seat for each passenger.');
+                return;
+            }
+            var selectedSeatIds = Array.from(selectedSeats)
+                .map(function (seat) {
+                    var seatId = seat.id;
+                    if (seatId !== "") {
+                        return "A" + seatId;
+                    }
+                })
+                .filter(function (seatId) {
+                    return seatId !== undefined;
+                });
+
+            
+            if (localStorage.getItem('OtherTrip') === null && localStorage.getItem('tripBack') == null ) {
+                var tripAway = JSON.parse(localStorage.getItem('tripAway'));
+                tripAway.occupiedSeats = selectedSeatIds.map(function (seatId) {
+                    return { seatNumber: seatId };
+                });
+
+                localStorage.setItem('tripAway', JSON.stringify(tripAway));
+
+                window.location.href = 'purchase.html';
+
+
+            }
+
+            if (localStorage.getItem('tripBack') != null) {
+                var tripBack = JSON.parse(localStorage.getItem('tripBack'));
+                tripBack.occupiedSeats = selectedSeatIds.map(function (seatId) {
+                    return { seatNumber: seatId };
+                });
+
+                localStorage.setItem('tripBack', JSON.stringify(tripBack));
+
+                window.location.href = 'purchase.html';
+            }
+
+            if (localStorage.getItem('OtherTrip') != null) {
+                var tripAway = JSON.parse(localStorage.getItem('tripAway'));
+                tripAway.occupiedSeats = selectedSeatIds.map(function (seatId) {
+                    return { seatNumber: seatId };
+                });
+
+                localStorage.setItem('tripAway', JSON.stringify(tripAway));
+
+                var otherTrip = JSON.parse(localStorage.getItem('OtherTrip'));
+
+                console.log(otherTrip);
+                console.log(localStorage.getItem('tripAway'));
+
+                var url = 'search.html?departure=' + otherTrip.departure + '&arrival=' + otherTrip.arrival + '&departureDate=' + otherTrip.departureDate;
+
+                window.location.href = url;
+
+
+            }
+
+
+        }
+
+
+        function getSearchParams() {
+            var currency = JSON.parse(localStorage.getItem('currency'));
+            var currentCoin = Object.keys(currency)[0];
+            var searchParams = new URLSearchParams(window.location.search);
+            var tripId = searchParams.get('tripId');
+            var tripType = searchParams.get('tripType');
+
+            var tripAway = JSON.parse(localStorage.getItem('tripAway'));
+            var otherTrip  = JSON.parse(localStorage.getItem('otherTrip'));
+            var tripBack = (localStorage.getItem('tripBack'));
+            console.log(tripBack);
+
+            if (tripBack != null) {
+                tripBack = JSON.parse(tripBack);
+            }
+
+            console.log(tripAway);
+            console.log(tripBack);
+            console.log(otherTrip)
+
+            var id = document.getElementById('id');
+            var from = document.getElementById('from');
+            var to = document.getElementById('to');
+            var departureDate = document.getElementById('departureDate');
+            var departureTime = document.getElementById('departureTime');
+            var arrivalTime = document.getElementById('arrivalTime');
+            var numPassengers = document.getElementById('numPassengers');
+            var selectedSeat = document.getElementById('selectedSeat');
+            var price = document.getElementById('price');
+
+            if (tripBack == null) {
+
+                var adults = tripAway.passengers.adult;
+                var children = tripAway.passengers.child;
+
+                id.innerHTML = tripAway.id;
+                from.innerHTML = tripAway.origin;
+                to.innerHTML = tripAway.destination;
+                departureDate.innerHTML = tripAway.departureDate;
+                departureTime.innerHTML = tripAway.departureTime.split(':').slice(0, 2).join(':');
+                arrivalTime.innerHTML = tripAway.arrivalTime.split(':').slice(0, 2).join(':');
+                numPassengers.innerHTML = `Adults: ${adults}`;
+                if (children > 0) {
+                    numPassengers.innerHTML += ` Children: ${children}`;
+                }
+
+                if (currentCoin !== 'USD') {
+                fetch('http://localhost:8080/api/exchange/USD/' + currentCoin)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to update data with new currency');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            price.innerHTML = (parseFloat(tripAway.price) * parseFloat(data)).toFixed(2) + ' ' + currentCoin;
+                        })
+                        .catch(error => {
+                            console.error('Error updating data:', error);
+                        });
+            }
+
+                else {
+                    price.innerHTML = tripAway.price + ' ' + currentCoin;
+                }
+                var seatNumbers = tripAway.occupiedSeats;
+                var occupiedSeats = seatNumbers.map(function (seat) {
+                    // Remove o primeiro caractere (letra)
+                    var seatNumber = seat.substring(1);
+                    // Se o comprimento do número do assento for menor que 2, preencha com zero à esquerda
+                    return seatNumber.padStart(2, '0');
+                });
+
+                console.log(occupiedSeats);
+                var seats = document.querySelectorAll('input[type="checkbox"]');
+                seats.forEach(seat => {
+                    if (occupiedSeats.includes(seat.id)) {
+                        seat.disabled = true;
+                    }
+                });
+
+            } else {
+                var adults = tripBack.passengers.adult;
+                var children = tripBack.passengers.child;
+
+                id.innerHTML = tripBack.id;
+                from.innerHTML = tripBack.origin;
+                to.innerHTML = tripBack.destination;
+                departureDate.innerHTML = tripBack.departureDate;
+                departureTime.innerHTML = tripBack.departureTime.split(':').slice(0, 2).join(':');
+                arrivalTime.innerHTML = tripBack.arrivalTime.split(':').slice(0, 2).join(':');
+                numPassengers.innerHTML = `Adults: ${adults}`;
+                if (children > 0) {
+                    numPassengers.innerHTML += ` Children: ${children}`;
+                }
+
+                if (currentCoin !== 'USD') {
+                fetch('http://localhost:8080/api/exchange/USD/' + currentCoin)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to update data with new currency');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            price.innerHTML = (parseFloat(tripBack.price) * parseFloat(data)).toFixed(2) + ' ' + currentCoin;
+                        })
+                        .catch(error => {
+                            console.error('Error updating data:', error);
+                        });
+            }
+
+                else {
+                    price.innerHTML = tripBack.price + ' ' + currentCoin;
+                }
+
+
+                var seatNumbers = tripBack.occupiedSeats;
+                var occupiedSeats = seatNumbers.map(function (seat) {
+                    return seat.substring(1);
+                });
+
+                var seats = document.querySelectorAll('input[type="checkbox"]');
+                seats.forEach(seat => {
+                    if (occupiedSeats.includes(seat.id)) {
+                        seat.disabled = true;
+                    }
+                });
+
+
+
+
+            }
+        }
+        window.onload = getSearchParams;
+
+
+        document.querySelector('.cabin').addEventListener('change', toggleSeatSelection);
+
+        function toggleSeatSelection(e) {
+            var selectedSeats = document.querySelectorAll('input[type="checkbox"]:checked');
+
+            var selectedSeatsList = document.getElementById('selectedSeatsList');
+            var numSelectedSeats = selectedSeats.length;
+            var tripAway = JSON.parse(localStorage.getItem('tripAway'));
+            var tripBack = JSON.parse(localStorage.getItem('tripBack'));
+            if (tripBack != null) {
+                var totalPassengers = parseInt(tripBack.passengers.adult) + parseInt(tripBack.passengers.child);
+            } else {
+                var totalPassengers = parseInt(tripAway.passengers.adult) + parseInt(tripAway.passengers.child);
+            }
+            console.log(totalPassengers);
+
+            if (numSelectedSeats > totalPassengers + 1) {
+                alert('Exceeded maximum number of passengers.');
+                e.target.checked = false;
+                return;
+            }
+
+            selectedSeatsList.innerHTML = '';
+            selectedSeats.forEach(seat => {
+                var li = document.createElement('li');
+                li.innerHTML = seat.id;
+                selectedSeatsList.appendChild(li);
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bus Tickts</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="bgimg w3-display-container w3-animate-opacity ">
+        <div class="overlay2"></div>
+        <div class="w3-xlarge w3-animate-top">
+            <h3 class="w3-display-topleft w3-padding-large" id="yourtickets"><a style="text-decoration:none"
+                    href="index.html"><strong>TravelEase</strong></a></h3>
+            <h3 class="w3-display-topright w3-padding-large"><strong>Travel with comfort and safety</strong></h3>
+        </div>
+
+
+        <div class="w3-display-middle">
+            <div class="w3-animate-bottom w3-padding-small w3-container" style="width:100%">
+                <div class="w3-bar w3-black w3-center">
+                    <button class="w3-bar-item w3-button tablink" id="OneWay" onclick="openLink(event, 'One Way');">One
+                        Way</button>
+                    <button class="w3-bar-item w3-button tablink" id="RoundTrip"
+                        onclick="openLink(event, 'Round Trip');">Round
+                        Trip</button>
+                </div>
+
+                <!-- One Way -->
+                <div id="One Way" class="w3-container w3-white myLink">
+                    <div class="w3-row-padding" style="margin:16px -16px;">
+                        <div class="w3-half">
+                            <label>From</label>
+                            <select class="w3-select" name="From" disabled id="OneWayFrom">
+
+                            </select>
+                        </div>
+                        <div class="w3-half">
+                            <label>To</label>
+                            <select class="w3-select" name="To" disabled id="OneWayTo">
+
+                            </select>
+                        </div>
+                        <div class="w3-half" style="margin-top:16px;">
+                            <label>Departure</label>
+                            <input class="w3-input w3-border" type="date" placeholder="Departure" id="OneWayDeparture"
+                                disabled>
+
+                        </div>
+                        <div class="w3-half" style="margin-top:16px;">
+                            <label> Passengers</label>
+                        </div>
+                        <div class="w3-dropdown-click w3-row-padding" style="width: 200px !important;">
+                            <button onclick="togglePassengerDropdown('OneWay')" class="w3-button  w3-border"
+                                style="width: 200px !important;" id="passengersOneWay" disabled>1 Adult</button>
+                            <div id="passengerDropdownOneWay" class="w3-dropdown-content w3-bar-block w3-border"
+                                style="width: 300px !important;">
+                            </div>
+                        </div>
+                        <div class="w3-row-padding w3-center">
+                            <label>Choose Payment Currency</label>
+                            <select class="w3-select" name="PaymentCurrency" id="CurrencyOneWay"
+                                onchange="handleCurrencyChange('OneWay')">
+                                <option value="USD">US Dollar (USD)</option>
+                                <option value="EUR">Euro (EUR)</option>
+                                <option value="GBP">British Pound (GBP)</option>
+                                <option value="JPY">Japanese Yen (JPY)</option>
+                                <option value="AUD">Australian Dollar (AUD)</option>
+                                <option value="CAD">Canadian Dollar (CAD)</option>
+                                <option value="CHF">Swiss Franc (CHF)</option>
+                                <option value="CNY">Chinese Yuan (CNY)</option>
+                                <option value="SEK">Swedish Krona (SEK)</option>
+                                <option value="NZD">New Zealand Dollar (NZD)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr class="w3-border-white w3-animate-right" style="margin-left: 20%;width:60%">
+                <!-- display the horarios -->
+                <div class="w3-row-padding w3-center" style="margin-top:20px;">
+                    <h3 class="w3-center">Available schedules</h3>
+                    <div class="w3-row-padding w3-center" style="margin-top:20px; width: 100%;" id="ticketContainer">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="w3-display-bottommiddle w3-padding-large">
+            Powered by <a href="https://cristiano-nicolau.github.io" target="_blank">Cristiano Nicolau</a>
+        </div>
+
+        <script src="script.js"></script>
+        <script>
+            // Obter a moeda atual da localStorage mas ela esta guardada assim         localStorage.setItem('currency', JSON.stringify({ 'USD': 1 }));     
+            var currency = JSON.parse(localStorage.getItem('currency'));
+            var currentCoin = Object.keys(currency)[0];
+            
+            
+
+            // Extrair os parâmetros da URL
+            function getSearchParams() {
+                var searchParams = new URLSearchParams(window.location.search);
+                var origin = searchParams.get('departure');
+                var destination = searchParams.get('arrival');
+                var departureDate = searchParams.get('departureDate');
+                var returnDate = searchParams.get('returnDate');
+
+                
+
+                // Verificar se todos os parâmetros necessários estão presentes
+                if (!origin || !destination || !departureDate) {
+                    console.error('Missing parameters in URL');
+                    return;
+                }
+
+                // Fazer a solicitação à API com os parâmetros extraídos
+                var url = `http://localhost:8080/api/trips/${origin}/${destination}/${departureDate}`;
+                // Fazer solicitação à API para obter dados dos bilhetes
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {        
+                                        
+                        if (data.length === 0) {
+                            console.log('No tickets available');
+                            return;
+                        }
+
+                        // Iterar sobre os dados dos bilhetes
+                        data.forEach(ticket => {
+                            // Criar um novo elemento div para representar o card do bilhete
+                            var card = document.createElement('div');
+                            card.className = 'w3-third w3-padding';
+                            
+                            console.log(ticket.price);
+                            // Criar o conteúdo do card com base nos dados do bilhete
+                            card.innerHTML = `
+                                    <div class="w3-card-3">
+                                    <header class="w3-container w3-light-grey">
+                                        <h4>${ticket.origin} to ${ticket.destination} - ${ticket.id}</h4>
+                                    </header>
+                                    <div class="w3-container" style="margin:15px" >
+                                        <p><strong>Departure Date:</strong> ${ticket.departureDate}</p>
+                                        <p><strong>Departure Time:</strong> ${ticket.departureTime.split(':').slice(0, 2).join(':')}</p>
+                                        <p><strong>Arrival Time:</strong> ${ticket.arrivalTime.split(':').slice(0, 2).join(':')}</p>
+                                        <p class='ticket-price'><strong>Price:</strong> ${ticket.price} ${currentCoin}</p>
+                                        <p><strong>Seats Available:</strong> ${(ticket.seats - ticket.occupiedSeats.length)}</p>
+                                    </div>
+                                    <button class="w3-button w3-block w3-dark-grey book-button" onclick="bookTicket(${ticket.id})"><strong>Book Now</strong></button>                                    </div>
+                                `;
+                                console.log(ticket);
+                            // Adicionar o card à página
+                            document.getElementById('ticketContainer').appendChild(card);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching tickets:', error));
+
+            }
+
+            console.log( JSON.parse(localStorage.getItem('requestData')))
+
+            function bookTicket(ticketId) {
+                var url = `http://localhost:8080/api/trips/${ticketId}`;
+                // Fazer solicitação à API para obter dados dos bilhetes
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+
+                        if (!data) {
+                            console.error('No ticket found with ID:', ticketId);
+                            return;
+                        }
+                        // Verificar se existem bilhetes disponíveis
+                        if (data.occupiedSeats.length == 50) {
+                            alert('No seats available for this trip');
+                            return;
+                        }
+
+                        var storedParams = JSON.parse(localStorage.getItem('requestData'));
+                        if(!localStorage.getItem('tripAway')){        
+                            var tripAway = {
+                                id: data.id,
+                                origin: data.origin,
+                                destination: data.destination,
+                                departureDate: data.departureDate,
+                                departureTime: data.departureTime,
+                                arrivalTime: data.arrivalTime,
+                                price: data.price,    
+                                occupiedSeats: data.occupiedSeats,
+                                passengers: storedParams.passengers,                      
+                            };
+
+                            localStorage.setItem('tripAway', JSON.stringify(tripAway));
+                            if(storedParams.tripType === 'Round Trip'){
+                                var OtherTrip = {
+                                    tripType: 'RoundTrip',
+                                    departure: data.destination,
+                                    arrival: data.origin,
+                                    departureDate: storedParams.returnDate,  
+                                    passengers: storedParams.passengers,               
+                                };
+                                localStorage.setItem('OtherTrip', JSON.stringify(OtherTrip));
+                            }    
+                        }     
+                        else{
+                            var tripBack = {
+                                id: data.id,
+                                origin: data.origin,
+                                destination: data.destination,
+                                departureDate: data.departureDate,
+                                departureTime: data.departureTime,
+                                arrivalTime: data.arrivalTime,
+                                price: data.price,    
+                                occupiedSeats: data.occupiedSeats,
+                                passengers: storedParams.passengers,                      
+                            };
+                            localStorage.setItem('tripBack', JSON.stringify(tripBack));
+                            console.log(localStorage.getItem('tripBack'));
+                            localStorage.removeItem('OtherTrip');
+                        }               
+                        var url = 'seats.html?tripId=' + ticketId + '&tripType=' + storedParams.tripType;                        
+
+                        window.location.href = url;
+
+                        
+                    })
+                    .catch(error => console.error('Error fetching tickets:', error));
+            }
+
+            // Extrair os parâmetros da localStorage
+            function getStoredParams() {
+                var storedParams = JSON.parse(localStorage.getItem('requestData'));
+                if (!storedParams) {
+                    console.error('No stored parameters found in localStorage');
+                    return;
+                }
+                return storedParams;
+            }
+
+            // Atualizar os campos do formulário com os parâmetros armazenados
+            function updateFormFields() {
+                var storedParams = getStoredParams();
+                var tripAway = JSON.parse(localStorage.getItem('tripAway'));
+                var otherTrip = JSON.parse(localStorage.getItem('OtherTrip'));
+                
+                if (tripAway && otherTrip) {
+                    storedParams = otherTrip;
+                }
+
+
+                document.getElementById('OneWay').disabled = true;
+                document.getElementById('RoundTrip').disabled = true;
+
+                var departureSelect = document.getElementById("OneWayFrom");
+
+                // Limpar as opções atuais
+                departureSelect.innerHTML = "";
+
+                // Adicionar a opção de partida armazenada
+                var defaultOption = document.createElement("option");
+                defaultOption.value = storedParams.departure;
+                defaultOption.textContent = storedParams.departure;
+                departureSelect.appendChild(defaultOption);
+
+                // Selecionar a opção padrão
+                defaultOption.selected = true;
+
+
+                var destinationSelect = document.getElementById("OneWayTo");
+
+                // Limpar as opções atuais
+                destinationSelect.innerHTML = "";
+
+                // Adicionar a opção de destino armazenada
+                var defaultOption = document.createElement("option");
+                defaultOption.value = storedParams.arrival;
+                defaultOption.textContent = storedParams.arrival;
+                destinationSelect.appendChild(defaultOption);
+
+                // Selecionar a opção padrão
+                defaultOption.selected = true;
+
+
+                // Adicionar a data de partida armazenada
+                document.getElementById("OneWayDeparture").value = storedParams.departureDate;
+
+                // Adicionar a quantidade de passageiros armazenada
+                var passengersOneWay = document.getElementById("passengersOneWay");
+                passengersOneWay.textContent = `${storedParams.passengers.adult} Adult`;
+                if (storedParams.passengers.child > 0) {
+                    passengersOneWay.textContent += `, ${storedParams.passengers.child} Child`;
+                }
+
+                // Adicionar a moeda armazenada
+                var currencyOneWay = document.getElementById("CurrencyOneWay");
+                currencyOneWay.value = currentCoin;
+                currencyOneWay.querySelectorAll('option').forEach(option => {
+                    if (option.value === currentCoin) {
+                        option.disabled = true;
+                    } else {
+                        option.disabled = false;
+                    }
+                });
+                // da disbled no value selecionado
+                
+            }
+
+            function handleCurrencyChange(identifier) {
+                var selectElement = document.getElementById('Currency' + identifier);
+                
+                // da disabled no selecionado
+                var currencyOneWay = document.getElementById("CurrencyOneWay");
+                currencyOneWay.querySelectorAll('option').forEach(option => {
+                    if (option.value ===  selectElement.value) {
+                        option.disabled = true;
+                    } else {
+                        option.disabled = false;
+                    }
+                });
+                var selectedCurrency = selectElement.value;
+                
+
+                // Faz uma solicitação ao backend para atualizar os dados com base na nova moeda
+                fetch('http://localhost:8080/api/exchange/'+ currentCoin +'/' + selectedCurrency)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to update data with new currency');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        var currencyValue = data;
+                        currentCoin = selectedCurrency;
+                        localStorage.setItem('currency', JSON.stringify({ [selectedCurrency]: currencyValue }));
+
+                        var ticketCards = document.querySelectorAll('.w3-card-3');
+                        ticketCards.forEach(ticketCard => {
+                            // Obter o preço do bilhete
+                            var priceElement = ticketCard.querySelector('.ticket-price');
+                            var currentPrice = parseFloat(priceElement.textContent.split(' ')[1]); // Extrair o preço atual
+
+                            // Calcular o novo preço na nova moeda
+                            var newPrice = (currentPrice * currencyValue).toFixed(2);
+
+                            // Atualizar o elemento do preço com o novo preço e a nova moeda
+                            priceElement.textContent = ` ${newPrice} ${selectedCurrency}`;
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error updating data:', error);
+                    });
+            }
+
+
+
+
+            updateFormFields();
+            window.onload = getSearchParams;
+
+        </script>
+</body>
+
+</html>

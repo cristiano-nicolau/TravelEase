@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bus Tickts</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="bgimg w3-display-container w3-animate-opacity ">
+        <div class="overlay2"></div>
+        <div class="w3-xlarge w3-animate-top">
+            <h2 class="w3-display-topleft w3-padding-large"><strong>TravelEase</strong></h2>
+            <h2 class="w3-display-topmiddle w3-padding-large">Travel with comfort and safety</h2>
+            <h2 class="w3-display-topright w3-padding-large" id="yourtickets" onclick="goSearch()"><strong>Search for a
+                    trip</strong></h2>
+        </div>
+
+
+        <div class="w3-display-middle" id="listItemContainer">
+            <ul id="list" class="w3-ul w3-xlarge w3-border" style="width:100%">
+                <li><h2>Tickts IDs</h2></li>
+                <!-- Aqui serão inseridos os itens da lista -->
+            </ul>
+        </div>
+    </div>
+
+    <div class="w3-display-bottommiddle w3-padding-large">
+        Powered by <a href="https://cristiano-nicolau.github.io" target="_blank">Cristiano Nicolau</a>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function goSearch() {
+            window.location.href = 'index.html';
+        }
+
+        
+    var listItemContainer = document.getElementById('listItemContainer');
+    var list = document.getElementById('list');
+
+    // Variável para armazenar os IDs dos itens da lista
+    var itemIds = [];
+
+    fetch('http://localhost:8080/api/mark/trip/')
+        .then(response => response.json())
+        .then(data => {
+            // Salvar os dados e gerar os itens da lista
+            generateListItems(data);
+        });
+
+    function generateListItems(data) {
+        // Limpar a lista antes de adicionar novos itens
+        list.innerHTML = '';
+
+        // Iterar sobre os dados e gerar os itens da lista
+        data.forEach(item => {
+            // Criar elementos da lista
+            var listItem = document.createElement('li');
+            listItem.className = 'w3-bar ';
+
+            var span = document.createElement('span');
+            span.className = 'w3-bar-item w3-button w3-xlarge w3-right';
+            span.textContent = '×';
+
+            var div = document.createElement('div');
+            div.className = 'w3-bar-item';
+            div.style.cursor = 'pointer'; // Set cursor to pointer
+            var spanLarge = document.createElement('span');
+            spanLarge.className = 'w3-large';
+            spanLarge.textContent = item.id; // You can set the text as desired
+
+            div.onclick = function() {
+                redirectToThankYouPage(item.id);
+            };
+
+            // Adicionar os elementos à lista
+            div.appendChild(spanLarge);
+            listItem.appendChild(span);
+            listItem.appendChild(div);
+            list.appendChild(listItem);
+
+            // Armazenar o ID do item na lista
+            itemIds.push(item.id);
+        });
+
+        // Adicionar os eventos de clique aos botões "×"
+        addDeleteEventListeners();
+    }
+
+    function addDeleteEventListeners() {
+        var deleteButtons = listItemContainer.querySelectorAll('.w3-bar-item.w3-button');
+
+        deleteButtons.forEach((button, index) => {
+            button.onclick = function () {
+                var id = itemIds[index];
+                deleteData(id);
+            };
+        });
+    }
+
+    function deleteData(id) {
+        // Chamar a API para excluir os dados com o ID fornecido
+        fetch('http://localhost:8080/api/mark/trip/' + id, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Data with ID ' + id + ' deleted successfully.');
+                // Recarregar a página após a exclusão dos dados
+                location.reload();
+            } else {
+                console.error('Failed to delete data with ID ' + id + '.');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting data:', error);
+        });
+    }
+
+    function redirectToThankYouPage(id) {
+        // Redirecionar para a página de agradecimento com o ID na URL
+        window.location.href = 'thankyou.html?away=' + id;
+    }
+    </script>
+</body>
+
+</html>

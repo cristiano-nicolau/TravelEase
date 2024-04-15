@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Selected Journey Details</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="bgimg w3-display-container w3-animate-opacity ">
+        <div class="overlay2"></div>
+        <div class="w3-xlarge w3-animate-top">
+            <h3 class="w3-display-topleft w3-padding-large" id="yourtickets"><a style="text-decoration:none"
+                    href="index.html"><strong>TravelEase</strong></a></h3>
+            <h3 class="w3-display-topright w3-padding-large"><strong>Travel with comfort and safety</strong></h3>
+        </div>
+
+        <div class="w3-display-middle" >
+            <h2 class="w3-center">Thank you for choosing TravelEase </h2>
+
+            <div class="w3-row-padding " >
+                <!-- Coluna para exibir informações da viagem -->
+                <div class="w3-half w3-animate-bottom w3-padding-large" style="color: white;">
+                    <div class="w3-container w3-padding-small" id="tripDetailsContainer">
+
+                    </div>
+
+                </div>
+                <div class="w3-half w3-animate-bottom w3-padding-small" style="color: white;">
+                    <div class="w3-container w3-padding-small" id="tripDetailsContainer">
+                        <p><strong>Name:</strong> <span id="name"></span></p>
+                        <p><strong>Email:</strong> <span id="email"></span></p>
+                        <p><strong>Phone:</strong> <span id="phone"></span></p>
+                        <p><strong>Nif:</strong> <span id="nif"></span></p>
+                        <p><strong>Address:</strong> <span id="address"></span></p>
+                        <p><strong>City:</strong> <span id="city"></span></p>
+                        <p><strong>Zip:</strong> <span id="zip"></span></p>
+                        <p><strong>Card Type:</strong> <span id="cardType"></span></p>
+                        <p><strong>Card Number:</strong> <span id="cardNumber"></span></p>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="w3-display-bottommiddle w3-padding-large">
+            Powered by <a href="https://cristiano-nicolau.github.io" target="_blank">Cristiano Nicolau</a>
+        </div>
+    </div>
+    <script>
+
+        function getSearchParams() {
+            var params = new URLSearchParams(window.location.search);
+            var Away = JSON.parse(params.get('away'));
+            var Back = params.has('back') ? JSON.parse(params.get('back')) : null;
+
+            var tripAway, tripBack;
+            var away, back;
+
+            var tripDetailsContainer = document.getElementById('tripDetailsContainer');
+            var tripDetails = document.createElement('div');
+            tripDetails.className = 'w3-container w3-padding-small';
+
+
+
+            var nameElement = document.getElementById('name');
+            var emailElement = document.getElementById('email');
+            var phoneElement = document.getElementById('phone');
+            var nifElement = document.getElementById('nif');
+            var addressElement = document.getElementById('address');
+            var cityElement = document.getElementById('city');
+            var zipElement = document.getElementById('zip');
+            var cardTypeElement = document.getElementById('cardType');
+            var cardNumberElement = document.getElementById('cardNumber');
+
+            fetch('http://localhost:8080/api/mark/trip/' + Away)
+                .then(response => response.json())
+                .then(data => {
+                    away = data;
+                    console.log(away);
+                    nameElement.textContent = away.name;
+                    emailElement.textContent = away.email;
+                    phoneElement.textContent = away.phone;
+                    nifElement.textContent = away.nif;
+                    addressElement.textContent = away.address;
+                    cityElement.textContent = away.city;
+                    zipElement.textContent = away.zipCode;
+                    cardTypeElement.textContent = away.cardType;
+                    cardNumberElement.textContent = away.cardNumber;
+
+                    fetch('http://localhost:8080/api/trips/' + away.tripID)
+                    .then(response => response.json())
+                    .then(data => {
+                        tripAway = data;
+                        if (Back ===null){
+                        var tripDetails = createTripDetailsElement(tripAway, 'Away', away);
+                        tripDetailsContainer.appendChild(tripDetails);
+                }});
+                    if (Back) {
+                        fetch('http://localhost:8080/api/mark/trip/' + Back)
+                            .then(response => response.json())
+                            .then(data => {
+                                back = data;
+                                console.log(back);
+                                fetch('http://localhost:8080/api/trips/' + back.tripID)
+                                .then(response => response.json())
+                                .then(data => {
+                                    tripBack = data;
+                                    var tripAwayDetails = createTripDetailsElement(tripAway, 'Away', away);
+                                    var tripBackDetails = createTripDetailsElement(tripBack, 'Back', back);
+  
+                                    tripDetailsContainer.appendChild(tripAwayDetails);
+                                    tripDetailsContainer.appendChild(tripBackDetails);
+                                });
+                            });
+                    }
+                });
+
+
+            var total = document.createElement('p');
+            var currency = JSON.parse(localStorage.getItem('currency'));
+            var currentCoin = Object.keys(currency)[0];
+            if (currentCoin !== 'USD') {
+                fetch('http://localhost:8080/api/exchange/USD/' + currentCoin)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to update data with new currency');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        var totalPrice = getTotalToPay() * data;
+                        total.innerHTML = '<strong> Total to Pay:</strong> <span id="totalToPay">' + totalPrice.toFixed(2) + ' ' + currentCoin + '</span>';
+                    })
+                    .catch(error => {
+                        console.error('Error updating data:', error);
+                    });
+            }
+
+            else {
+                total.innerHTML = '<strong> Total to Pay:</strong> <span id="totalToPay">' + getTotalToPay() + ' ' + currentCoin + '</span>';
+            }
+
+
+            tripDetails.appendChild(total);
+            tripDetailsContainer.appendChild(tripDetails);
+
+            function getTotalToPay() {
+                var total = tripAway.price;
+                if (tripBack) {
+                    total += tripBack.price;
+                }
+                return total.toFixed(2);
+            }
+
+            function createTripDetailsElement(trip, prefix, info) {
+
+                var tripDetails = document.createElement('div');
+                tripDetails.className = 'w3-container w3-padding-small';
+
+                var tripNumber = document.createElement('p');
+                tripNumber.innerHTML = '<strong>Trip Number:</strong> <span id="' + prefix + 'id">' + trip.id + '</span>';
+                tripDetails.appendChild(tripNumber);
+
+                var from = document.createElement('p');
+                from.innerHTML = '<strong>From:</strong> <span id="' + prefix + 'from">' + trip.origin + '</span>';
+                tripDetails.appendChild(from);
+
+                var to = document.createElement('p');
+                to.innerHTML = '<strong>To:</strong> <span id="' + prefix + 'to">' + trip.destination + '</span>';
+                tripDetails.appendChild(to);
+
+                var departureDate = document.createElement('p');
+                departureDate.innerHTML = '<strong>Departure Date:</strong> <span id="' + prefix + 'departureDate">' + trip.departureDate + '</span>';
+                tripDetails.appendChild(departureDate);
+
+                var departureTime = document.createElement('p');
+                departureTime.innerHTML = '<strong>Departure Time:</strong> <span id="' + prefix + 'departureTime">' + trip.departureTime.split(':').slice(0, 2).join(':') + '</span>';
+                tripDetails.appendChild(departureTime);
+
+                var arrivalTime = document.createElement('p');
+                arrivalTime.innerHTML = '<strong>Arrival Time:</strong> <span id="' + prefix + 'arrivalTime">' + trip.arrivalTime.split(':').slice(0, 2).join(':') + '</span>';
+                tripDetails.appendChild(arrivalTime);
+
+
+                var currency = JSON.parse(localStorage.getItem('currency'));
+                var currentCoin = Object.keys(currency)[0];
+
+                var price = document.createElement('p');
+
+                if (currentCoin !== 'USD') {
+                    fetch('http://localhost:8080/api/exchange/USD/' + currentCoin)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to update data with new currency');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            var newPrice = trip.price * data;
+                            price.innerHTML = '<strong>Price:</strong> <span id="' + prefix + 'price">' + newPrice.toFixed(2) + ' ' + currentCoin + '</span>';
+                        })
+                        .catch(error => {
+                            console.error('Error updating data:', error);
+                        });
+                }
+
+                else {
+                    price.innerHTML = '<strong>Price:</strong> <span id="' + prefix + 'price">' + trip.price + ' ' + currentCoin + '</span>';
+                }
+                tripDetails.appendChild(price);
+
+
+                var numPassengers = document.createElement('p');
+                numPassengers.innerHTML = '<strong>Number of Passengers:</strong><br> <span id="' + prefix + 'numPassengers">' + getNumPassengersString(info.numPassagersAdults, info.numPassagersChildren) + '</span>';
+                tripDetails.appendChild(numPassengers);
+
+                var selectedSeats = document.createElement('p');
+                selectedSeats.innerHTML = '<strong>Selected Seat:</strong><br><ol id="' + prefix + 'selectedSeatsList">' + getSelectedSeatsList(info.seats) + '</ol>';
+                tripDetails.appendChild(selectedSeats);
+
+                var space = document.createElement('br');
+                tripDetails.appendChild(space);
+
+                return tripDetails;
+            }
+
+            function getNumPassengersString(adults, children) {
+                var numPassengersString = 'Adults: ' + adults;
+                if (children > 0) {
+                    numPassengersString += ' Children: ' + children;
+                }
+                return numPassengersString;
+            }
+            function getSelectedSeatsList(trip) {
+                trip.sort(); // Sort the occupied seats in ascending order
+                return trip.join(', '); // Join the occupied seats with a comma
+            }
+
+        }
+        window.onload = getSearchParams;
+        setTimeout(function() {
+            window.location.href = 'index.html'; // Redireciona para index.html após 60 segundos
+        }, 60000); // 60000 milissegundos = 60 segundos
+
+
+    </script>
+</body>
+
+</html>
