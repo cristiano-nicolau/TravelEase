@@ -6,7 +6,7 @@ The project is divided into two parts:
 * The first part is the backend, which is developed in Spring Boot, with a MySQL database in docker.
 * The second part is the frontend, which is developed in HTML, JS and CSS.
 
-# Technologies
+## Technologies
 
 - Spring Boot
 - MySQL
@@ -15,16 +15,18 @@ The project is divided into two parts:
 - JS
 - CSS
 
-# Tests
+## Tests
 
 - Unit tests with JUnit and Mockito.
 - Integration tests with Spring Boot Test and MockMvc.
+
+See principal objectives of the project [here](https://github.com/cristiano-nicolau/TravelEase/blob/main/TQS-HW_midterm_assignment.pdf)
  
-See full documentation [here](https://example.com/documentation) with Test Coverage and details of the tests and API documentation.
+See full documentation [here](https://github.com/cristiano-nicolau/TravelEase/blob/main/Report_hw1_tqs_108536.pdf) with Test Coverage and details of the tests and API documentation.
 
 See video of demo [here](https://youtu.be/aQj6cqA_YdA)
 
-# Config mysql in docker
+## Config mysql in docker
 
 ```bash
 docker run --name mysql5 -e MYSQL_ROOT_PASSWORD=secret1 -e MYSQL_DATABASE=bus_tickts -e MYSQL_USER=demo -e MYSQL_PASSWORD=secret2 -p 33060:3306 -d mysql/mysql-server:5.7
@@ -41,7 +43,7 @@ docker exec -it mysql5 mysql -u root -p
 ```
 
 
-# How to run
+## How to run
 
 1. Clone the repository
 2. Run the MySQL in docker
@@ -54,7 +56,7 @@ docker exec -it mysql5 mysql -u root -p
     - Open the index.html file in the browser
 
 
-# How to run tests
+## How to run tests
 
 1. Run the MySQL in docker
 2. Run the backend tests
